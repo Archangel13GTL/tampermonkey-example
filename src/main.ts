@@ -1,6 +1,6 @@
 import { greet } from './utils/greeter'
 
-(function () {
+;(function () {
   // Your userscript entry point
   console.log(greet('Tampermonkey'))
 
@@ -10,4 +10,3 @@ import { greet } from './utils/greeter'
     console.log('Running on example.com')
   }
 })()
-

@@ -6,4 +6,3 @@ describe('greet', () => {
     expect(greet('World')).toBe('Hello, World!')
   })
 })
-

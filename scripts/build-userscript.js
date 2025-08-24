@@ -17,4 +17,3 @@ if (TARGET) {
   copyFileSync(out, targetPath)
   console.log(`Copied userscript to ${targetPath}`)
 }
-

@@ -1,37 +1,34 @@
 {
   "folders": [
     {
-      "path": "."
-    }
+      "path": ".",
+    },
   ],
   "settings": {
     "typescript.preferences.includePackageJsonAutoImports": "auto",
-    "eslint.validate": [
-      "typescript",
-      "javascript"
-    ],
+    "eslint.validate": ["typescript", "javascript"],
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
+      "source.fixAll.eslint": "explicit",
     },
     "files.exclude": {
       "node_modules": true,
-      "dist": false
+      "dist": false,
     },
     "search.exclude": {
       "node_modules": true,
       "dist": true,
-      "coverage": true
-    }
+      "coverage": true,
+    },
   },
   "extensions": {
     "recommendations": [
       "esbenp.prettier-vscode",
       "dbaeumer.vscode-eslint",
       "streetsidesoftware.code-spell-checker",
-      "ms-vscode.vscode-typescript-next"
-    ]
+      "ms-vscode.vscode-typescript-next",
+    ],
   },
   "tasks": {
     "version": "2.0.0",
@@ -45,9 +42,9 @@
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
+          "panel": "shared",
         },
-        "problemMatcher": []
+        "problemMatcher": [],
       },
       {
         "label": "Build Userscript",
@@ -55,17 +52,15 @@
         "command": "npm run build",
         "group": {
           "kind": "build",
-          "isDefault": true
+          "isDefault": true,
         },
         "presentation": {
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
+          "panel": "shared",
         },
-        "problemMatcher": [
-          "$tsc"
-        ]
+        "problemMatcher": ["$tsc"],
       },
       {
         "label": "Run Tests",
@@ -73,14 +68,14 @@
         "command": "npm test",
         "group": {
           "kind": "test",
-          "isDefault": true
+          "isDefault": true,
         },
         "presentation": {
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
-        }
+          "panel": "shared",
+        },
       },
       {
         "label": "Watch Tests",
@@ -92,8 +87,8 @@
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
-        }
+          "panel": "shared",
+        },
       },
       {
         "label": "Dev Server",
@@ -105,8 +100,8 @@
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
-        }
+          "panel": "shared",
+        },
       },
       {
         "label": "Lint",
@@ -117,8 +112,8 @@
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
-        }
+          "panel": "shared",
+        },
       },
       {
         "label": "Format Code",
@@ -129,10 +124,10 @@
           "echo": true,
           "reveal": "always",
           "focus": false,
-          "panel": "shared"
-        }
-      }
-    ]
+          "panel": "shared",
+        },
+      },
+    ],
   },
   "launch": {
     "version": "0.2.0",
@@ -144,8 +139,8 @@
         "program": "${workspaceFolder}/node_modules/.bin/vitest",
         "args": ["run"],
         "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
-      }
-    ]
-  }
+        "internalConsoleOptions": "neverOpen",
+      },
+    ],
+  },
 }
