@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.eol": "\n",
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "eslint.validate": ["typescript", "javascript"],
+  "files.exclude": {
+    "dist": true,
+    "coverage": true,
+    "node_modules": true
+  }
+}
+
