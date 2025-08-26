@@ -41,6 +41,9 @@ npx vitest run tests/greeter.test.ts
 
 # Run tests with coverage
 npm test -- --coverage
+
+# Or via script alias
+npm run test:coverage
 ```
 
 ## Build System Architecture
