@@ -1502,10 +1502,24 @@
   function tileImage(im, state) {
     const wrap = document.createElement('div'); wrap.className = 'ntb-item img';
     const a = document.createElement('a'); a.href = im.url; a.setAttribute('data-url', im.url);
-    const img = document.createElement('img'); img.src = im.url; img.loading='lazy'; img.decoding='async';
-    img.addEventListener('load', ()=> state.meta.noteImageSize(im.url, img.naturalWidth, img.naturalHeight));
-    a.appendChild(img); wrap.appendChild(a);
-    a.addEventListener('click', (e)=>{ e.preventDefault(); openLightbox(state, im.url); });
+
+    const imgWrap = document.createElement('div'); imgWrap.className = 'ntb-img-wrap';
+    const img = document.createElement('img'); img.src = im.url; img.loading = 'lazy'; img.decoding = 'async';
+    const res = document.createElement('div'); res.className = 'ntb-resolution';
+    imgWrap.appendChild(img); imgWrap.appendChild(res);
+
+    const caption = document.createElement('div'); caption.className = 'ntb-caption'; caption.textContent = im.name;
+    const dim = document.createElement('span'); dim.className = 'ntb-dim'; caption.appendChild(dim);
+
+    img.addEventListener('load', () => {
+      state.meta.noteImageSize(im.url, img.naturalWidth, img.naturalHeight);
+      const text = img.naturalWidth && img.naturalHeight ? `${img.naturalWidth}×${img.naturalHeight}` : '';
+      res.textContent = text;
+      dim.textContent = text ? ` ${text}` : '';
+    });
+
+    a.appendChild(imgWrap); a.appendChild(caption); wrap.appendChild(a);
+    a.addEventListener('click', (e) => { e.preventDefault(); openLightbox(state, im.url); });
     state.meta.observe(a);
     return wrap;
   }
@@ -1567,14 +1581,23 @@
   function openLightbox(state, url) {
     const lb = ensureLightbox();
     const img = lb.querySelector('.ntb-zoomimg');
+    const zw = lb.querySelector('.ntb-zoomwrap');
     const focusables = () => Array.from(lb.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')).filter(el=>!el.hasAttribute('disabled'));
     const prevFocus = document.activeElement;
     const idxList = state.items.images.map(x=>x.url);
     let idx = Math.max(0, idxList.indexOf(url));
     let z=1, tx=0, ty=0;
     const apply = ()=>{ img.style.transform = `translate(${tx}px, ${ty}px) scale(${z})`; };
-    const load = ()=>{ img.src = idxList[idx]; reset(); };
-    const reset = ()=>{ z=1; tx=0; ty=0; apply(); };
+    const reset = ()=>{
+      if (img.naturalWidth && img.naturalHeight) {
+        const fit = Math.min(zw.clientWidth / img.naturalWidth, zw.clientHeight / img.naturalHeight, 1);
+        z = fit;
+      } else {
+        z = 1;
+      }
+      tx = 0; ty = 0; apply();
+    };
+    const load = ()=>{ img.onload = reset; img.src = idxList[idx]; };
     const onKey = (e)=>{
       if (e.key==='Escape') return close();
       if (e.key==='ArrowRight') { idx=(idx+1)%idxList.length; load(); }
@@ -1584,7 +1607,15 @@
       if (e.key==='0') { reset(); }
       if (e.key==='f') { img.style.objectFit = img.style.objectFit==='contain'?'cover':'contain'; }
     };
-    const onWheel = (e)=>{ if (!e.ctrlKey && !e.shiftKey) return; e.preventDefault(); const dz = (e.deltaY<0?0.1:-0.1); z=clamp(z+dz,0.25,8); apply(); };
+    const onWheel = (e)=>{
+      e.preventDefault();
+      if (e.ctrlKey || e.shiftKey) {
+        const dz = (e.deltaY < 0 ? 0.1 : -0.1); z = clamp(z + dz, 0.25, 8);
+      } else {
+        tx -= e.deltaX; ty -= e.deltaY;
+      }
+      apply();
+    };
     const onDrag = (()=>{
       let dragging=false, sx=0, sy=0; 
       return {
