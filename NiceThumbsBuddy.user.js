@@ -1504,10 +1504,9 @@
     const a = document.createElement('a'); a.href = im.url; a.setAttribute('data-url', im.url);
 
     const imgWrap = document.createElement('div'); imgWrap.className = 'ntb-img-wrap';
-    const img = document.createElement('img'); img.src = im.url; img.loading = 'lazy'; img.decoding = 'async';
+    const img = document.createElement('img'); img.loading = 'lazy'; img.decoding = 'async';
     const res = document.createElement('div'); res.className = 'ntb-resolution';
     imgWrap.appendChild(img); imgWrap.appendChild(res);
-
     const caption = document.createElement('div'); caption.className = 'ntb-caption'; caption.textContent = im.name;
     const dim = document.createElement('span'); dim.className = 'ntb-dim'; caption.appendChild(dim);
 
@@ -1517,6 +1516,7 @@
       res.textContent = text;
       dim.textContent = text ? ` ${text}` : '';
     });
+    img.src = im.url;
 
     a.appendChild(imgWrap); a.appendChild(caption); wrap.appendChild(a);
     a.addEventListener('click', (e) => { e.preventDefault(); openLightbox(state, im.url); });
