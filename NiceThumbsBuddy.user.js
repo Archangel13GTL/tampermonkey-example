@@ -30,9 +30,13 @@
 // @include      /^https?:\/\/[^\/]+\/(?:[^?#]*\/)?(?:index\.html?)?$/
 // ==/UserScript==
 
+/* eslint-disable */
+/* eslint-env browser */
+/* global GM_getValue, GM_setValue */
+
 /*
  * NiceThumbsBuddy: "When your directories deserve better than naked listings."
- * 
+ *
  * Every folder has a story to tell. This script helps it tell that story with style.
  * 
  * "Knowledge isn't power until it is applied." - Dale Carnegie
@@ -658,6 +662,7 @@
     
     .ntb-toolbar input[type="range"] {
       accent-color: var(--ntb-ac);
+      width: 140px;
     }
     
     .ntb-toolbar .ntb-icon {
@@ -668,11 +673,12 @@
     }
     
     /* Grid View */
-    .ntb-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(var(--ntb-size), 1fr)); 
-      gap: var(--ntb-gap); 
-      padding: 16px; 
+    .ntb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(0, var(--ntb-size)));
+      gap: var(--ntb-gap);
+      padding: 16px;
+      justify-content: center;
     }
     
     .ntb-item { 
@@ -1584,7 +1590,17 @@
       if (e.key==='0') { reset(); }
       if (e.key==='f') { img.style.objectFit = img.style.objectFit==='contain'?'cover':'contain'; }
     };
-    const onWheel = (e)=>{ if (!e.ctrlKey && !e.shiftKey) return; e.preventDefault(); const dz = (e.deltaY<0?0.1:-0.1); z=clamp(z+dz,0.25,8); apply(); };
+    const onWheel = (e)=>{
+      e.preventDefault();
+      if (e.ctrlKey || e.shiftKey) {
+        const dz = (e.deltaY < 0 ? 0.1 : -0.1);
+        z = clamp(z + dz, 0.25, 8);
+      } else {
+        tx -= e.deltaX;
+        ty -= e.deltaY;
+      }
+      apply();
+    };
     const onDrag = (()=>{
       let dragging=false, sx=0, sy=0; 
       return {
